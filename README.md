@@ -3,4 +3,10 @@ Open-source game thing made in Godot 3 (Idk if this stuff will work in Godot 4 w
 <br />
 ## Roadmap
 Feel free to check our roadmap here: <br />
-https://trello.com/b/NyTCIxam/physics-game
+https://trello.com/b/NyTCIxam/physics-game <br />
+<br />
+## Features
+The following list are all the current features in the game
+* Terrible gun to remove objects
+* Custom objects
+* RigidBody funny

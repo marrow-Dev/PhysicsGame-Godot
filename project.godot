@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="Physics Game"
+config/name="Project : Physus"
 run/main_scene="res://Levels/Level.tscn"
 config/icon="res://assets/graybox_sprite.png"
 

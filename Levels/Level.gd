@@ -3,17 +3,34 @@ extends Spatial
 onready var playerHand = $Player/Head/Camera/HoldPosition
 var selectedObject = 0
 
-# loading the scenes to spawn in
+# loading the scenes to spawn in - NOTE: These are ones that are added manually
 var bottleObject = load("res://assets/bottle.tscn")
 var tableObject = load("res://assets/Table.tscn")
 
-var spawnableObjects = [
-	bottleObject,
-	tableObject
-]
+var location = OS.get_executable_path().get_base_dir()
+
+var spawnableObjects = []
 
 func _ready():
-	pass
+	
+	# adding the base assets to the spawnableObjects array
+	spawnableObjects = [
+		bottleObject,
+		tableObject
+	]
+	
+	var files = []
+	var dir = Directory.new()
+	dir.open(str(location)+"/CustomItems")
+	print(dir)
+	
+	for n in range(10):
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif not file.begins_with("."):
+			spawnObject(0)
+	dir.list_dir_end()
 
 func _physics_process(delta):
 	

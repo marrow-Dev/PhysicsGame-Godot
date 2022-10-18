@@ -35,3 +35,12 @@ transform = Transform( 0.0683189, 0, 0, 0, 0.0683189, 0, 0, 0, 0.0683189, 18.062
 
 [node name="Table" parent="." instance=ExtResource( 4 )]
 transform = Transform( 0.599826, 0, 0, 0, 0.599826, 0, 0, 0, 0.599826, 18.7068, 0.683971, 5.27875 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchor_left = 0.009
+anchor_top = 0.963
+anchor_right = 0.009
+anchor_bottom = 0.973
+margin_right = 124.0
+margin_bottom = 24.0
+text = "Bottle"

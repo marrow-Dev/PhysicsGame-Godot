@@ -5,12 +5,13 @@ export var massSpawn : bool = false
 onready var playerHand = $Player/Head/Camera/HoldPosition
 onready var objectLabel = $RichTextLabel
 var selectedObject = 0
-var objectCount = 3
+var objectCount = 4
 
 # loading the scenes to spawn in - NOTE: These are ones that are added manually
 var bottleObject = load("res://assets/bottle.tscn")
 var tableObject = load("res://assets/Table.tscn")
 var crateObject = load("res://assets/WoodenCrate.tscn")
+var targetObject = load("res://assets/Target.tscn")
 
 # for built-in or modpack assets here's the format:
 # var [object name]Object = load("[res:// path for the .tscn file]")
@@ -21,6 +22,9 @@ var location = OS.get_executable_path().get_base_dir()
 var spawnableObjects = []
 var objectNames = []
 
+
+
+
 func _ready():
 	
 	
@@ -30,13 +34,15 @@ func _ready():
 	spawnableObjects = [
 		bottleObject,
 		tableObject,
-		crateObject
+		crateObject,
+		targetObject
 	]
 	
 	objectNames = [
 		"Bottle",
 		"Table",
-		"Crate"
+		"Crate",
+		"Target"
 	]
 	
 	if exporting:

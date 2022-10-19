@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://Player/Player.gd" type="Script" id=1]
-[ext_resource path="res://Player/WhereLook.gd" type="Script" id=2]
-[ext_resource path="res://assets/Control.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/gun.obj" type="ArrayMesh" id=4]
-[ext_resource path="res://assets/graybox_sprite.png" type="Texture" id=5]
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/WhereLook.gd" type="Script" id=2]
+[ext_resource path="res://Menus/PauseMenu.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Models/gun.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://Textures/graybox_sprite.png" type="Texture" id=5]
+[ext_resource path="res://Textures/crosshair.png" type="Texture" id=6]
 
 [sub_resource type="CapsuleMesh" id=2]
 radius = 0.5
@@ -85,9 +86,9 @@ skeleton = NodePath("../../..")
 material/0 = SubResource( 5 )
 
 [node name="GunCast" type="RayCast" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.102839, -0.313, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 enabled = true
-cast_to = Vector3( 0, -250, 0 )
+cast_to = Vector3( 0, -25, 0 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/PitolFire = SubResource( 6 )
@@ -98,3 +99,17 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.467534, 0 )
 enabled = true
 
 [node name="Control" parent="." instance=ExtResource( 3 )]
+
+[node name="FPSCounter" type="RichTextLabel" parent="."]
+margin_right = 96.0
+margin_bottom = 15.0
+text = "FPS:"
+
+[node name="CrossHair" type="TextureRect" parent="."]
+anchor_left = 0.485
+anchor_top = 0.5
+anchor_right = 0.485
+anchor_bottom = 0.5
+margin_right = 32.0
+margin_bottom = 32.0
+texture = ExtResource( 6 )

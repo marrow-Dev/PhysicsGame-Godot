@@ -16,13 +16,10 @@ var fall = Vector3()
 var collider
 var objectToDelete
 var isGrounded = true
-var fireType = 0
+var fireType = Globals.gunFireMode
 
-var fireModes = [
-	"Semi-Auto",
-	"Full-Auto"
-]
-var maxFireMode = 1
+var fireModes = Globals.gunFireTypes
+var maxFireMode = Globals.maxFireMode
 
 onready var gunCast = $Head/Camera/GunCast
 onready var animPlayer = $AnimationPlayer
@@ -36,7 +33,7 @@ onready var FPSCounter = $FPSCounter
 # Sprint function
 func playerSprint(walkSpeed, sprintSpeed):
 	# Sprinting
-	if Input.is_action_pressed("sprint"):
+	if Input.is_action_pressed("sprint"): # checking if left-shift is held down
 		speed = sprintSpeed
 	else:
 		speed = walkSpeed
@@ -52,7 +49,7 @@ func fire(): # fireGun
 
 # Checks if player is grounded
 func checkGround():
-	if groundCheck.is_colliding():
+	if groundCheck.is_colliding(): # checking if the groundCheck raycast is colliding with the ground
 		var collidingWith = groundCheck.get_collider()
 		if collidingWith.name == "Ground":
 			isGrounded = true
@@ -76,21 +73,22 @@ func _input(event):
 
 func _physics_process(delta):
 	
-	FPSCounter.text = "FPS : " + str(Engine.get_frames_per_second())
+	FPSCounter.text = "FPS : " + str(Engine.get_frames_per_second()) # getting the games FPS and setting the FPSlabel's text to the FPS
 	
-	if not pauseMenu.isPaused:
+	
+	if not pauseMenu.isPaused: # if the game isn't paused
 		
 		checkGround()
 		
 		# For shooting
-		if fireType == 0:
+		if fireType == 0: # semi-auto
 			if Input.is_action_just_pressed("shoot"):
 				fire()
-		elif fireType == 1:
+		elif fireType == 1: # full-auto
 			if Input.is_action_pressed("shoot"):
 				fire()
 		
-		if Input.is_action_just_pressed("switchFireMode"):
+		if Input.is_action_just_pressed("switchFireMode"): # switching the guns firemode
 			if fireType < maxFireMode:
 				fireType += 1
 			else:
@@ -111,9 +109,6 @@ func _process(delta):
 		# Jumping
 		if Input.is_action_just_pressed("jump") and isGrounded:
 			fall.y = jump
-
-		if Input.is_action_just_pressed("ui_cancel"): # Lets you exit game without Alt + F4 Yay!
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
 		# Move forwards
 		if Input.is_action_pressed("move_forward"):
@@ -135,6 +130,6 @@ func _process(delta):
 
 		# Moving the player
 		direction = direction.normalized() # making sure the player doesn't move faster going diagonally
-		velocity = velocity.linear_interpolate(direction * speed, acceleration * delta)
+		velocity = velocity.linear_interpolate(direction * speed, acceleration * delta) # moving the player
 		velocity = move_and_slide(velocity, Vector3.UP) # actually moving the player
 		move_and_slide(fall, Vector3.UP) # Making the player jump

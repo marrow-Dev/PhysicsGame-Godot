@@ -1,13 +1,13 @@
 extends Control
 
 
-var isPaused = false
+var isPaused = Globals.isPaused
 onready var ResumeButton = $TextureButton
 onready var QuitButton = $QuitButton
+onready var settingsButton = $settingsButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	isPaused = false
 	self.visible = false
 
 
@@ -22,6 +22,8 @@ func _process(delta):
 		closePauseMenu()
 	if QuitButton.is_pressed():
 		closeGame()
+	if settingsButton.is_pressed():
+		$Settings.visible = true
 
 func closePauseMenu():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

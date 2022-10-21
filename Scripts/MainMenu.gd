@@ -21,7 +21,7 @@ func _process(delta):
 	# Settings menu button
 	if settingsButton.is_pressed():
 		self.visible = false
-		get_tree().change_scene("res://Menus/SettingsMenu.tscn")
+		$Settings.visible = true
 	
 	# Quit game button
 	if quitButton.is_pressed():

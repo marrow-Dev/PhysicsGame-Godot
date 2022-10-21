@@ -98,6 +98,9 @@ func _physics_process(delta):
 # Updates every frame
 func _process(delta):
 	if not pauseMenu.isPaused:
+		
+		$CrossHair.visible = true
+		
 		## Running the custom functions
 		playerSprint(walkSpeed, sprintSpeed)
 
@@ -133,3 +136,5 @@ func _process(delta):
 		velocity = velocity.linear_interpolate(direction * speed, acceleration * delta) # moving the player
 		velocity = move_and_slide(velocity, Vector3.UP) # actually moving the player
 		move_and_slide(fall, Vector3.UP) # Making the player jump
+	else:
+		$CrossHair.visible = false

@@ -1,7 +1,9 @@
 extends Node
 
 ###### Game options ######
-var modSupport = true
+var modSupport = false
+var multiSpawn = false
+var isPaused = false
 
 ###### Gun Options ######
 var gunFireMode = 0

@@ -1,7 +1,7 @@
 extends Spatial
 
 var modSupport = Globals.modSupport
-export var massSpawn : bool = false
+var multiSpawn = Globals.multiSpawn
 onready var playerHand = $Player/Head/Camera/HoldPosition
 onready var objectLabel = $RichTextLabel
 var selectedObject = 0
@@ -26,7 +26,7 @@ var objectNames = []
 
 
 func _ready():
-	
+	print(str(multiSpawn))
 	
 	objectCount -= 1
 	
@@ -96,10 +96,10 @@ func _physics_process(delta):
 			objectLabel.text = objectNames[selectedObject]
 			print("Object switched down")
 	
-	if massSpawn:
+	if multiSpawn:
 		if Input.is_action_pressed("spawnBottle"):
 			spawnObject(selectedObject)
-	elif not massSpawn:
+	elif not multiSpawn:
 		if Input.is_action_just_pressed("spawnBottle"):
 			spawnObject(selectedObject)
 

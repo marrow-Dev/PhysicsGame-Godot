@@ -1,4 +1,4 @@
-# PhysicsGame-Godot
+# Physics Game | Godot
 Open-source game thing made in Godot 3 (Idk if this stuff will work in Godot 4 without any modifications). Currently being worked on by 1 person, I might let contributers add some things to the game. If you would like to see how to install or make mods check [here](https://github.com/marrow-Dev/PhysicsGame-Godot/wiki)<br />
 <br />
 ## Roadmap

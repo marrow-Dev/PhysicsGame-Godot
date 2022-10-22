@@ -3,7 +3,7 @@ extends Spatial
 var modSupport = Globals.modSupport
 var multiSpawn = Globals.multiSpawn
 onready var playerHand = $Player/Head/Camera/HoldPosition
-onready var objectLabel = $RichTextLabel
+onready var objectLabel = $currentItem
 var selectedObject = 0
 var objectCount = 4
 
@@ -18,6 +18,9 @@ var targetObject = load("res://Spawnables/Target.tscn")
 
 
 var location = OS.get_executable_path().get_base_dir()
+var dir = Directory.new()
+var gameDirectory = Directory.new()
+
 
 var spawnableObjects = []
 var objectNames = []
@@ -26,7 +29,7 @@ var objectNames = []
 
 
 func _ready():
-	print(str(multiSpawn))
+	gameDirectory.open(location)
 	
 	objectCount -= 1
 	
@@ -45,9 +48,9 @@ func _ready():
 		"Target"
 	]
 	
-	if modSupport:
+	if modSupport and gameDirectory.dir_exists("CustomItems"):
 		var files = []
-		var dir = Directory.new()
+		
 		dir.open(str(location)+"/CustomItems")
 		dir.list_dir_begin()
 			

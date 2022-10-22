@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/WhereLook.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Models/gun.obj" type="ArrayMesh" id=4]
 [ext_resource path="res://Textures/graybox_sprite.png" type="Texture" id=5]
 [ext_resource path="res://Textures/crosshair.png" type="Texture" id=6]
+[ext_resource path="res://Fonts/Default.tres" type="DynamicFont" id=7]
 
 [sub_resource type="CapsuleMesh" id=2]
 radius = 0.5
@@ -102,7 +103,8 @@ enabled = true
 
 [node name="FPSCounter" type="RichTextLabel" parent="."]
 margin_right = 96.0
-margin_bottom = 15.0
+margin_bottom = 18.0
+custom_fonts/normal_font = ExtResource( 7 )
 text = "FPS:"
 
 [node name="CrossHair" type="TextureRect" parent="."]

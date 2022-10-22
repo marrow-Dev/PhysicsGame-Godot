@@ -63,7 +63,6 @@ func _ready():
 func _input(event):
 	if not pauseMenu.isPaused:
 		if event is InputEventMouseMotion:
-			
 			# Rotating the X and Y axis of the camera to look around
 			rotate_y(deg2rad(-event.relative.x * mouseSensitivity))
 			head.rotate_x(deg2rad(-event.relative.y * mouseSensitivity)) # head.rotate_x is used otherwise the looking goes wonkey

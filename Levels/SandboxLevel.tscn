@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Spawnables/Bottle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Spawnables/Table.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/Level.gd" type="Script" id=4]
 [ext_resource path="res://Textures/graybox_sprite.png" type="Texture" id=5]
+[ext_resource path="res://Fonts/Default.tres" type="DynamicFont" id=6]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -36,11 +37,12 @@ transform = Transform( 0.0683189, 0, 0, 0, 0.0683189, 0, 0, 0, 0.0683189, 18.062
 [node name="Table" parent="." instance=ExtResource( 3 )]
 transform = Transform( 0.599826, 0, 0, 0, 0.599826, 0, 0, 0, 0.599826, 18.7068, 0.683971, 5.27875 )
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="currentItem" type="RichTextLabel" parent="."]
 anchor_left = 0.009
 anchor_top = 0.963
 anchor_right = 0.009
 anchor_bottom = 0.973
 margin_right = 124.0
 margin_bottom = 24.0
+custom_fonts/normal_font = ExtResource( 6 )
 text = "Bottle"

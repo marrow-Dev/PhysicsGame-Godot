@@ -2,8 +2,8 @@ extends Control
 
 var multiSpawn = Globals.multiSpawn
 
-onready var changeSpawnMode = $changeSpawnMode
-onready var backButton = $backButton
+onready var changeSpawnMode = $itemContainer/changeSpawnMode
+onready var backButton = $itemContainer/backButton
 
 ### TEXTURES ###
 onready var semiSpawnTex = load("res://Textures/spawnSemiButton.png")
@@ -21,6 +21,9 @@ func _ready():
 
 
 func _physics_process(delta):
+	
+	
+	
 	if changeSpawnMode.is_hovered() and Input.is_action_just_pressed("shoot"):
 		if Globals.multiSpawn:
 			changeSpawnMode.set_normal_texture(semiSpawnTex)
@@ -28,5 +31,3 @@ func _physics_process(delta):
 		else:
 			changeSpawnMode.set_normal_texture(autoSpawnText)
 			Globals.multiSpawn = true
-	elif backButton.is_hovered() and Input.is_action_just_pressed("shoot"):
-		self.visible = false

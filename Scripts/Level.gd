@@ -96,10 +96,10 @@ func _physics_process(delta):
 			objectLabel.text = objectNames[selectedObject]
 			print("Object switched down")
 	
-	if multiSpawn:
+	if Globals.multiSpawn:
 		if Input.is_action_pressed("spawnBottle"):
 			spawnObject(selectedObject)
-	elif not multiSpawn:
+	elif not Globals.multiSpawn:
 		if Input.is_action_just_pressed("spawnBottle"):
 			spawnObject(selectedObject)
 

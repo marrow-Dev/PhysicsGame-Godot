@@ -20,7 +20,8 @@ var targetObject = load("res://Spawnables/Target.tscn")
 var gameLocation = OS.get_executable_path().get_base_dir()
 var dir = Directory.new()
 var gameDirectory = Directory.new()
-var scriptDirectory = Directory.new()
+var scriptsDir = Directory.new()
+
 
 var customScripts = []
 var spawnableObjects = []
@@ -49,8 +50,60 @@ func _ready():
 		"Target"
 	]
 	
-	if Globals.modSupport:
-		loadItems(str(gameLocation) + "/CustomItems")
+	if modSupport and gameDirectory.dir_exists("CustomScripts"):
+		var scriptsLoaded = []
+		scriptsDir.open(str(gameDirectory)+"/CustomScripts")
+		scriptsDir.list_dir_begin()
+		
+		for scriptAmount in range(1000):
+			var currentScript = scriptsDir.get_next()
+			
+			if currentScript == "":
+				break
+			
+			elif not currentScript.begins_with("."):
+				if currentScript.ends_with(".gd"):
+					var newCustomScript = str(gameLocation)+"/CustomScripts/"+str(currentScript)
+					
+					print("Loaded new script: " + newCustomScript.replace(".gd", ""))
+					customScripts.append(newCustomScript)
+		scriptsDir.list_dir_end()
+	
+	if modSupport and gameDirectory.dir_exists("CustomItems"):
+		var files = []
+		
+		dir.open(str(gameLocation)+"/CustomItems")
+		dir.list_dir_begin()
+			
+		for n in range(1000):
+			var file = dir.get_next()
+			if file == "":
+				break
+			elif not file.begins_with("."):
+				var newObject = load(str(gameLocation)+"/CustomItems/"+str(file))
+				var objectName = file.replace(".tscn", "")
+				if dir.current_is_dir():
+					var childDirectory = Directory.new()
+					childDirectory.open(str(gameLocation)+"/CustomItems/"+str(file))
+					childDirectory.list_dir_begin()
+					for x in range(1000):
+						var childFile = childDirectory.get_next()
+						if childFile == "":
+							break
+						elif not childFile.begins_with("."):
+							print(str(childFile))
+							if childFile.ends_with(".tscn"):
+								var childObject = load(str(gameLocation)+"/CustomItems/"+str(file)+"/"+str(childFile)) # loading the custom item
+								spawnableObjects.append(childObject) # adding the custom item to the game
+								var childName = childFile.replace(".tscn", "")
+								objectNames.append(childName)
+								objectCount += 1
+								print(childName)
+				if file.ends_with(".tscn"):
+					objectNames.append(objectName)
+					objectCount += 1
+					spawnableObjects.append(newObject)
+		dir.list_dir_end()
 	
 	print("Current spawnable object count : " + str(objectCount + 1))
 
@@ -81,33 +134,3 @@ func spawnObject(object):
 
 	add_child(spawnableInstance)
 	spawnableInstance.global_transform.origin = playerHand.global_transform.origin
-
-### CUSTOM ITEM LOADING ###
-func loadItems(path):
-	var loadingDir = Directory.new()
-	if loadingDir.open(path) == OK:
-		print("Starting I T E M scan")
-		loadingDir.list_dir_begin()
-		
-		var currentFile = loadingDir.get_next()
-		
-		while currentFile != "":
-			
-			if currentFile.begins_with("."):
-				print("Found invalid or parent folder/file! Skipping.")
-			
-			if loadingDir.current_is_dir():
-				print("Found folder: " + currentFile)
-			
-			elif currentFile.ends_with(".tscn"):
-				print("Found item: " + currentFile)
-				var currentObject = load(str(gameLocation) + "/CustomItems/" + currentFile)
-				var currentObjectName = currentFile.replace(".tscn", "")
-				
-				objectNames.append(currentObjectName)
-				spawnableObjects.append(currentObject)
-				objectCount += 1
-			
-			else:
-				print("Found other: " + currentFile)
-

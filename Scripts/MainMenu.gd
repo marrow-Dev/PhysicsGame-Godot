@@ -1,8 +1,9 @@
 extends Control
 
-var currentMapSelected = 0
+
 var mapCount = -1
 var levelsDir = Directory.new()
+var scriptsDir = Directory.new()
 var gameDirectory = Directory.new()
 
 onready var modSupport = Globals.modSupport
@@ -23,9 +24,12 @@ onready var seperateUIObjects = [ # put everything here that you want to be hidd
 	quitButton,
 	sandboxButton,
 	settingsButton,
-	playCustomLevelButton
+	playCustomLevelButton,
+	switchingButton
 ]
 
+var customScriptNames = []
+var customScripts = []
 var customLevels = []
 var customLevelNames = []
 
@@ -33,33 +37,16 @@ var customLevelNames = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	mapCount = -1
+	
 	gameDirectory.open(str(gameLocation))
 	
 	if not modSupport:
 		$buttonContainers/switchingButton/Label.text = "No mod support!"
 	
-	if modSupport and gameDirectory.dir_exists("CustomMaps"):
-		var levelsLoaded = []
-		levelsDir.open(str(gameLocation)+"/CustomMaps") # telling the game where to look for maps
-		levelsDir.list_dir_begin() # beginning going through the files
-		
-		for mapAmount in range(1000): # will look at a max of 1000 maps
-			var currentMap = levelsDir.get_next()
-			
-			if currentMap == "": # making sure the game isn't looking for an empty file
-				break
-			
-			elif not currentMap.begins_with("."): # if it hasn't reached the end of the customMaps list
-				var newCustomMap = str(gameLocation) + "/CustomMaps/" + str(currentMap)
-				var newCustomMapName = str(currentMap).replace(".tscn", "")
-				print("Loaded new map: " + newCustomMapName)
-				customLevelNames.append(newCustomMapName)
-				customLevels.append(newCustomMap)
-				mapCount += 1
-		levelsDir.list_dir_end()
-		$buttonContainers/switchingButton/Label.text = customLevelNames[currentMapSelected]
-	else:
-		$buttonContainers/switchingButton/Label.text = "No Map Folder Found!"
+	if Globals.modSupport:
+		loadScripts(str(gameLocation) + "/CustomMaps/Scripts")
+		loadMaps(str(gameLocation) + "/CustomMaps")
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
@@ -84,15 +71,93 @@ func _process(delta):
 	
 	if switchingButton.is_hovered() and Input.is_action_just_pressed("shoot"):
 		if modSupport and gameDirectory.dir_exists("CustomMaps"):
-			if currentMapSelected < mapCount:
+			if Globals.currentSelectedMap < mapCount:
+				Globals.currentSelectedMap += 1
 				print("new map")
-				$buttonContainers/switchingButton/Label.text = customLevelNames[currentMapSelected]
-				currentMapSelected += 1
+				print(Globals.currentSelectedMap)
+				print(customLevels[Globals.currentSelectedMap])
+				$buttonContainers/switchingButton/Label.text = customLevelNames[Globals.currentSelectedMap]
 			else:
+				Globals.currentSelectedMap = 0
 				print("reset map")
-				$buttonContainers/switchingButton/Label.text = customLevelNames[currentMapSelected]
-				currentMapSelected = 0
+				print(Globals.currentSelectedMap)
+				print(customLevels[Globals.currentSelectedMap])
+				$buttonContainers/switchingButton/Label.text = customLevelNames[Globals.currentSelectedMap]
 	
 	if playCustomLevelButton.is_hovered() and Input.is_action_just_pressed("shoot"):
 		if modSupport:
-			get_tree().change_scene(customLevels[currentMapSelected])
+			print(customLevels)
+			print("loading level: " + customLevelNames[Globals.currentSelectedMap])
+			print("loading level file: " + customLevels[Globals.currentSelectedMap])
+			get_tree().change_scene(customLevels[Globals.currentSelectedMap])
+
+
+
+
+
+### SCRIPT LOADING ###
+func loadScripts(path):
+	var loadingDir = Directory.new()
+	
+	if loadingDir.open(path) == OK:
+		
+		loadingDir.list_dir_begin() # starting the scan for the files
+		print("Starting S C R I P T scan") # logging that the scan has started
+			
+		var currentFile = loadingDir.get_next() # making a variable called currentFile which is the file that has been found
+		while currentFile != "": # if the currentFile variable isn't empty
+			if currentFile.begins_with("."):
+				pass
+				
+			elif loadingDir.current_is_dir():
+				print("Found directory: " + currentFile)
+			
+			elif not loadingDir.current_is_dir():
+				if currentFile.ends_with(".gd"):
+					print("Found script: " + currentFile)
+					
+					customScripts.append(str(gameLocation) + "/CustomMaps/Scripts/" + currentFile) # adding the files location to the customScripts array
+					customScriptNames.append(currentFile.replace(".gd", "")) # adding the files name to the customScriptNames array
+			
+			else:
+				print("Found other file: " + currentFile)
+				
+			
+			currentFile = loadingDir.get_next() # getting the next file
+
+
+
+### MAP LOADING ###
+func loadMaps(path):
+	var loadingDir = Directory.new()
+	
+	if loadingDir.open(path) == OK:
+		
+		loadingDir.list_dir_begin() # starting the scan for the files
+		print("Starting M A P scan") # logging that the scan has started
+		
+		var currentFile = loadingDir.get_next() # making a variable called currentFile which is the file that has been found
+		while currentFile != "": # if the currentFile variable isn't empty
+			if currentFile.begins_with("."):
+				pass
+			
+			elif loadingDir.current_is_dir(): # if there's another directory inside "path" directory
+				print("Found directory: " + currentFile)
+			
+			elif not loadingDir.current_is_dir(): # if currentFile is a file
+				if currentFile.ends_with(".tscn"): # if it's a scene
+					print("Found map: " + currentFile)
+					
+					customLevels.append(str(gameLocation) + "/CustomMaps/" + currentFile) # adding the map to the loadable maps array
+					customLevelNames.append(currentFile.replace(".tscn", "")) # adding the maps name to the loadable map names array
+					mapCount += 1
+			
+			else: # if there's a different file
+				print("Found other file: " + currentFile)
+			
+			currentFile = loadingDir.get_next() # getting the next file
+				
+		$buttonContainers/switchingButton/Label.text = customLevelNames[Globals.currentSelectedMap]
+		
+	else: # if the map folder doesn't exist
+		$buttonContainers/switchingButton/Label.text = "No Map Folder Found!"

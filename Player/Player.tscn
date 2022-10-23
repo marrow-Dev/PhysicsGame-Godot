@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/WhereLook.gd" type="Script" id=2]
 [ext_resource path="res://Menus/PauseMenu.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Models/gun.obj" type="ArrayMesh" id=4]
-[ext_resource path="res://Textures/graybox_sprite.png" type="Texture" id=5]
+[ext_resource path="res://Models/m4.fbx" type="PackedScene" id=4]
+[ext_resource path="res://Animations/m4Anim.tres" type="Animation" id=5]
 [ext_resource path="res://Textures/crosshair.png" type="Texture" id=6]
 [ext_resource path="res://Fonts/Default.tres" type="DynamicFont" id=7]
 
@@ -18,29 +18,14 @@ height = 1.5
 
 [sub_resource type="GDScript" id=4]
 
-[sub_resource type="SpatialMaterial" id=5]
-albedo_texture = ExtResource( 5 )
-
 [sub_resource type="Animation" id=6]
 resource_name = "PitolFire"
 length = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath("Head/Camera/gun:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0.256204, -0.475723, -0.572544 ), Vector3( 0.256204, -0.475723, -0.365787 ), Vector3( 0.256, -0.476, -0.573 ) ]
-}
 
 [sub_resource type="Animation" id=7]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head/Camera/gun:translation")
+tracks/0/path = NodePath("Head/Camera/m4:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -49,7 +34,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.256204, -0.475723, -0.572544 ) ]
+"values": [ Vector3( 0.259509, -0.533207, -0.634981 ) ]
 }
 
 [node name="Player" type="KinematicBody"]
@@ -80,20 +65,18 @@ script = SubResource( 4 )
 [node name="HoldPosition" type="Spatial" parent="Head/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0905913, -0.174, -2.492 )
 
-[node name="gun" type="MeshInstance" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.256204, -0.475723, -0.572544 )
-mesh = ExtResource( 4 )
-skeleton = NodePath("../../..")
-material/0 = SubResource( 5 )
-
 [node name="GunCast" type="RayCast" parent="Head/Camera"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.147183, 0 )
 enabled = true
 cast_to = Vector3( 0, -25, 0 )
+
+[node name="m4" parent="Head/Camera" instance=ExtResource( 4 )]
+transform = Transform( -4.71399e-09, 0, -0.107844, 0, 0.107844, 0, 0.107844, 0, -4.71399e-09, 0.259509, -0.533207, -0.634981 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/PitolFire = SubResource( 6 )
 anims/RESET = SubResource( 7 )
+anims/m4Anim = ExtResource( 5 )
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.467534, 0 )
@@ -108,6 +91,7 @@ custom_fonts/normal_font = ExtResource( 7 )
 text = "FPS:"
 
 [node name="CrossHair" type="TextureRect" parent="."]
+visible = false
 anchor_left = 0.485
 anchor_top = 0.5
 anchor_right = 0.485

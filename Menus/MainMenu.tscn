@@ -1,9 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Textures/quitButton.png" type="Texture" id=1]
-[ext_resource path="res://Textures/sandboxButton.png" type="Texture" id=2]
+[ext_resource path="res://Fonts/Default - Title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Scripts/MainMenu.gd" type="Script" id=3]
-[ext_resource path="res://Textures/settingsButton.png" type="Texture" id=4]
 [ext_resource path="res://Menus/SettingsMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Fonts/Default.tres" type="DynamicFont" id=6]
 [ext_resource path="res://Textures/emptyButton.png" type="Texture" id=7]
@@ -35,14 +33,39 @@ margin_bottom = 52.0
 [node name="quitButton" type="TextureButton" parent="buttonContainers"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-texture_normal = ExtResource( 1 )
+texture_normal = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="buttonContainers/quitButton"]
+anchor_left = 0.25
+anchor_right = 0.25
+margin_right = 71.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 1 )
+text = "QUIT"
 
 [node name="sandboxButton" type="TextureButton" parent="buttonContainers"]
 anchor_top = -0.5
-texture_normal = ExtResource( 2 )
+anchor_bottom = -0.5
+texture_normal = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="buttonContainers/sandboxButton"]
+anchor_left = 0.075
+anchor_right = 0.075
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "SANDBOX"
 
 [node name="settingsButton" type="TextureButton" parent="buttonContainers"]
-texture_normal = ExtResource( 4 )
+texture_normal = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="buttonContainers/settingsButton"]
+anchor_left = 0.1
+anchor_right = 0.1
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "SETTINGS"
 
 [node name="Settings" parent="buttonContainers" instance=ExtResource( 5 )]
 visible = false

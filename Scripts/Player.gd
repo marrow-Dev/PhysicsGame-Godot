@@ -14,7 +14,7 @@ var direction = Vector3()
 var velocity = Vector3()
 var fall = Vector3()
 var collider
-var objectToDelete
+var shotObject
 var isGrounded = true
 var fireType = Globals.gunFireMode
 
@@ -28,6 +28,8 @@ onready var groundCheck = $GroundCheck
 onready var pauseMenu = $Control
 onready var FPSCounter = $FPSCounter
 
+onready var bulletDecal = load("res://Extras/Bullet-Decals.tscn")
+
 #### CUSTOM FUNCTIONS ####
 
 # Sprint function
@@ -40,12 +42,16 @@ func playerSprint(walkSpeed, sprintSpeed):
 
 # Fire gun function
 func fire(): # fireGun
-	animPlayer.play("PitolFire")
+	animPlayer.play("m4Anim")
+	var bulletHole = bulletDecal.instance()
 	var collider = gunCast.get_collider()
-	if collider != null and collider is RigidBody:
+	if collider != null:
 		print("Shot fired at RigidBody")
-		objectToDelete = collider
-		objectToDelete.queue_free()
+		shotObject = collider
+		collider.add_child(bulletHole) # creating the bullet hole
+		bulletHole.global_transform.origin = gunCast.get_collision_point() # placing the bullet hole where the shot was fired at
+		bulletHole.look_at(gunCast.get_collision_point() + gunCast.get_collision_normal(), Vector3.UP) # making the bullet hole visible
+
 
 # Checks if player is grounded
 func checkGround():

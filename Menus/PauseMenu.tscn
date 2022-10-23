@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=1]
-[ext_resource path="res://Textures/quitButton.png" type="Texture" id=2]
-[ext_resource path="res://Textures/RESUMEBUTTON.png" type="Texture" id=3]
-[ext_resource path="res://Textures/settingsButton.png" type="Texture" id=4]
+[ext_resource path="res://Textures/emptyButton.png" type="Texture" id=2]
+[ext_resource path="res://Fonts/Default - Title.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Menus/SettingsMenu.tscn" type="PackedScene" id=5]
 
 [node name="Control" type="Control"]
@@ -25,7 +24,15 @@ margin_bottom = 52.0
 anchor_top = -0.5
 anchor_bottom = -0.5
 action_mode = 0
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="pauseMenuContainer/TextureButton"]
+anchor_left = 0.15
+anchor_right = 0.15
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 3 )
+text = "RESUME"
 
 [node name="QuitButton" type="TextureButton" parent="pauseMenuContainer"]
 anchor_top = 0.5
@@ -35,8 +42,25 @@ margin_bottom = 32.0
 action_mode = 0
 texture_normal = ExtResource( 2 )
 
+[node name="Label" type="Label" parent="pauseMenuContainer/QuitButton"]
+anchor_left = 0.3
+anchor_right = 0.3
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 3 )
+text = "QUIT"
+
 [node name="settingsButton" type="TextureButton" parent="pauseMenuContainer"]
 anchor_bottom = 0.101
-texture_normal = ExtResource( 4 )
+texture_normal = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="pauseMenuContainer/settingsButton"]
+anchor_left = 0.075
+anchor_right = 0.075
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 3 )
+text = "SETTINGS"
 
 [node name="Settings" parent="pauseMenuContainer" instance=ExtResource( 5 )]
+visible = false

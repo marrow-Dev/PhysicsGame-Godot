@@ -1,7 +1,8 @@
 extends Node
 
 ###### Game options ######
-var modSupport = false
+var currentSelectedMap = 0
+var modSupport = true
 var multiSpawn = false
 var isPaused = false
 

@@ -12,6 +12,7 @@ config_version=4
 
 config/name="Project : Physus"
 run/main_scene="res://Menus/MainMenu.tscn"
+boot_splash/show_image=false
 boot_splash/image="res://projectPhysusLogo.png"
 config/icon="res://projectPhysusLogo.png"
 config/windows_native_icon="res://projectPhysusLogo.ico"

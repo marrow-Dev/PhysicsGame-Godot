@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Fonts/Default - Title.tres" type="DynamicFont" id=1]
+[ext_resource path="res://ModLoading/ModLoader.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/MainMenu.gd" type="Script" id=3]
 [ext_resource path="res://Menus/SettingsMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Fonts/Default.tres" type="DynamicFont" id=6]
@@ -103,3 +104,8 @@ margin_bottom = 23.0
 custom_fonts/font = ExtResource( 6 )
 text = "PLAY CUSTOM LEVEL"
 align = 1
+
+[node name="Mod_Loader" parent="buttonContainers" instance=ExtResource( 2 )]
+anchor_left = -1.0
+anchor_right = -0.1
+anchor_bottom = 2.6

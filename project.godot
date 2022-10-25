@@ -8,6 +8,34 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Resource",
+"class": "ModManager",
+"language": "GDScript",
+"path": "res://ModLoading/menu.gd"
+}, {
+"base": "Resource",
+"class": "Mod_BOX",
+"language": "GDScript",
+"path": "res://ModdedItems/Mod_Resource.gd"
+}, {
+"base": "Resource",
+"class": "Mod_Marrows_Sandbox",
+"language": "GDScript",
+"path": "res://mSandbox/Mod_Resource.gd"
+}, {
+"base": "Resource",
+"class": "Mod_NAME",
+"language": "GDScript",
+"path": "res://MOSD/Mod_Resource.gd"
+} ]
+_global_script_class_icons={
+"ModManager": "",
+"Mod_BOX": "",
+"Mod_Marrows_Sandbox": "",
+"Mod_NAME": ""
+}
+
 [application]
 
 config/name="Project : Physus"

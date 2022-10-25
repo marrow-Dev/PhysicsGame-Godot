@@ -31,7 +31,6 @@ onready var seperateUIObjects = [ # put everything here that you want to be hidd
 var customScriptNames = []
 var customScripts = []
 var customLevels = []
-var customLevelNames = []
 
 
 # Called when the node enters the scene tree for the first time.
@@ -45,8 +44,9 @@ func _ready():
 		$buttonContainers/switchingButton/Label.text = "No mod support!"
 	
 	if Globals.modSupport:
-		loadScripts(str(gameLocation) + "/CustomMaps/Scripts")
-		loadMaps(str(gameLocation) + "/CustomMaps")
+		pass
+		# loadScripts(str(gameLocation) + "/CustomMaps/Scripts")
+		# loadMaps(str(gameLocation) + "/CustomMaps")
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
@@ -75,21 +75,20 @@ func _process(delta):
 				Globals.currentSelectedMap += 1
 				print("new map")
 				print(Globals.currentSelectedMap)
-				print(customLevels[Globals.currentSelectedMap])
-				$buttonContainers/switchingButton/Label.text = customLevelNames[Globals.currentSelectedMap]
+				print(Globals.customLevels[Globals.currentSelectedMap])
+				$buttonContainers/switchingButton/Label.text = Globals.customLevelNames[Globals.currentSelectedMap]
 			else:
 				Globals.currentSelectedMap = 0
 				print("reset map")
 				print(Globals.currentSelectedMap)
-				print(customLevels[Globals.currentSelectedMap])
-				$buttonContainers/switchingButton/Label.text = customLevelNames[Globals.currentSelectedMap]
+				print(Globals.customLevels[Globals.currentSelectedMap])
+				$buttonContainers/switchingButton/Label.text = Globals.customLevelNames[Globals.currentSelectedMap]
 	
 	if playCustomLevelButton.is_hovered() and Input.is_action_just_pressed("shoot"):
 		if modSupport:
-			print(customLevels)
-			print("loading level: " + customLevelNames[Globals.currentSelectedMap])
-			print("loading level file: " + customLevels[Globals.currentSelectedMap])
-			get_tree().change_scene(customLevels[Globals.currentSelectedMap])
+			# print("loading level: " + customLevelNames[Globals.currentSelectedMap])
+			# print("loading level file: " + Globals.customLevels[Globals.currentSelectedMap])
+			get_tree().change_scene(Globals.customLevels[Globals.currentSelectedMap])
 
 
 
@@ -148,8 +147,8 @@ func loadMaps(path):
 				if currentFile.ends_with(".tscn"): # if it's a scene
 					print("Found map: " + currentFile)
 					
-					customLevels.append(str(gameLocation) + "/CustomMaps/" + currentFile) # adding the map to the loadable maps array
-					customLevelNames.append(currentFile.replace(".tscn", "")) # adding the maps name to the loadable map names array
+					Globals.customLevels.append(str(gameLocation) + "/CustomMaps/" + currentFile) # adding the map to the loadable maps array
+					Globals.customLevelNames.append(currentFile.replace(".tscn", "")) # adding the maps name to the loadable map names array
 					mapCount += 1
 			
 			else: # if there's a different file
@@ -157,7 +156,7 @@ func loadMaps(path):
 			
 			currentFile = loadingDir.get_next() # getting the next file
 				
-		$buttonContainers/switchingButton/Label.text = customLevelNames[Globals.currentSelectedMap]
+		$buttonContainers/switchingButton/Label.text = Globals.customLevelNames[Globals.currentSelectedMap]
 		
 	else: # if the map folder doesn't exist
 		$buttonContainers/switchingButton/Label.text = "No Map Folder Found!"

@@ -1,5 +1,18 @@
 extends Spatial
 
+var Map_Resource : Resource
+var Resource_Name = "Mod_Resource"
+var mod_manager_name = "boneLoader" # Replace this with the mod managers name
+var mod_file_name = "marrowsSandbox" # replace this with the mod name
+var mod_file_author = "marrow" # replace this with the mod author
+var folder_name = mod_file_author + mod_file_name
+
+var mod_file
+var mod_manager
+var mod_name
+var mod_author
+var mod_version
+
 var modSupport = Globals.modSupport
 var multiSpawn = Globals.multiSpawn
 onready var playerHand = $Player/Head/Camera/HoldPosition
@@ -31,9 +44,18 @@ var objectNames = []
 
 
 func _ready():
+	
+	print(str(gameLocation) + "/" + mod_manager_name + "/" + mod_file_author + "." + mod_file_name + "/" + Resource_Name + ".tres")
+	mod_file = load(str(gameLocation) + "/" + mod_manager_name + "/" + mod_file_author + "." + mod_file_name + "/" + Resource_Name + ".tres") # getting the mods resource
+	
+	# settings the mods variables
+	mod_manager = mod_file.get("mod_manager")
+	mod_name = mod_file.get("mod_name")
+	mod_author = mod_file.get("mod_author")
+	mod_version = mod_file.get("mod_version")
 	gameDirectory.open(gameLocation)
 	
-	objectCount -= 1
+	Globals.objectCount -= 1
 	
 	# adding the base assets to the spawnableObjects array
 	spawnableObjects = [
@@ -43,6 +65,9 @@ func _ready():
 		targetObject
 	]
 	
+	for object in spawnableObjects:
+		Globals.customItems.append(object)
+	
 	objectNames = [
 		"Bottle",
 		"Table",
@@ -50,67 +75,12 @@ func _ready():
 		"Target"
 	]
 	
-	if modSupport and gameDirectory.dir_exists("CustomScripts"):
-		var scriptsLoaded = []
-		scriptsDir.open(str(gameDirectory)+"/CustomScripts")
-		scriptsDir.list_dir_begin()
-		
-		for scriptAmount in range(1000):
-			var currentScript = scriptsDir.get_next()
-			
-			if currentScript == "":
-				break
-			
-			elif not currentScript.begins_with("."):
-				if currentScript.ends_with(".gd"):
-					var newCustomScript = str(gameLocation)+"/CustomScripts/"+str(currentScript)
-					
-					print("Loaded new script: " + newCustomScript.replace(".gd", ""))
-					customScripts.append(newCustomScript)
-		scriptsDir.list_dir_end()
-	
-	if modSupport and gameDirectory.dir_exists("CustomItems"):
-		var files = []
-		
-		dir.open(str(gameLocation)+"/CustomItems")
-		dir.list_dir_begin()
-			
-		for n in range(1000):
-			var file = dir.get_next()
-			if file == "":
-				break
-			elif not file.begins_with("."):
-				var newObject = load(str(gameLocation)+"/CustomItems/"+str(file))
-				var objectName = file.replace(".tscn", "")
-				if dir.current_is_dir():
-					var childDirectory = Directory.new()
-					childDirectory.open(str(gameLocation)+"/CustomItems/"+str(file))
-					childDirectory.list_dir_begin()
-					for x in range(1000):
-						var childFile = childDirectory.get_next()
-						if childFile == "":
-							break
-						elif not childFile.begins_with("."):
-							print(str(childFile))
-							if childFile.ends_with(".tscn"):
-								var childObject = load(str(gameLocation)+"/CustomItems/"+str(file)+"/"+str(childFile)) # loading the custom item
-								spawnableObjects.append(childObject) # adding the custom item to the game
-								var childName = childFile.replace(".tscn", "")
-								objectNames.append(childName)
-								objectCount += 1
-								print(childName)
-				if file.ends_with(".tscn"):
-					objectNames.append(objectName)
-					objectCount += 1
-					spawnableObjects.append(newObject)
-		dir.list_dir_end()
-	
 	print("Current spawnable object count : " + str(objectCount + 1))
 
 func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("itemSelectionUp"):
-		if selectedObject < objectCount:
+		if selectedObject < Globals.objectCount:
 			selectedObject += 1
 			objectLabel.text = objectNames[selectedObject]
 			print("Object switched up")
@@ -130,7 +100,7 @@ func _physics_process(delta):
 func spawnObject(object):
 
 	# creating the instances
-	var spawnableInstance = spawnableObjects[object].instance()
+	var spawnableInstance = Globals.customItems[object].instance()
 
 	add_child(spawnableInstance)
 	spawnableInstance.global_transform.origin = playerHand.global_transform.origin

@@ -6,6 +6,12 @@ var modSupport = true
 var multiSpawn = false
 var isPaused = false
 
+var customLevels = []
+var cusomtLevelNames = []
+var customItems = []
+
+var objectCount = 4
+
 ###### Gun Options ######
 var gunFireMode = 0
 var gunFireTypes = [
